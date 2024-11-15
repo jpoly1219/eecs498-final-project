@@ -12,6 +12,18 @@ The prompt should have the following:
 
 This is a function of (product of the above six) -> (erroneous lines, feedback).
 
+### Notes from Nov 14 2024
+
+It seems like the prompt works decently well.
+
+What works:
+- Deterministically returns a JSON that we can parse directly.
+- Feedback seems pretty accurate.
+
+What doesn't work:
+- The line numbers seem to be nondeterministic. Sometimes it will be correct, sometimes it will be off.
+  - Maybe a chain of thought prompting can fix this.
+
 ## Prompt body
 
 I will give you the following list of items: LeetCode Question Body, Student code, Error body, Expert code, Expert step-by-step solution, and my request.

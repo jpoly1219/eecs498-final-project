@@ -7,6 +7,6 @@ export default {
 
 export const Default = {
   args: {
-    className: {},
+    className: "",
   },
 };

@@ -1,19 +1,34 @@
-/*
-We're constantly improving the code you see. 
-Please share your feedback here: https://form.asana.com/?k=uvp-HPgd3_hyoXRBw1IcNg&d=1152665201300829
-*/
-
-import React from "react";
+import React, { useState } from "react";
+import CodeMirror from "@uiw/react-codemirror"; // Import CodeMirror
+import { python } from "@codemirror/lang-python"; // Language support for Python
 import "./style.css";
 
-export const CodeEditorDisplay = ({ className }) => {
+export const CodeEditorDisplay = ({ className, onCodeChange }) => {
+  const [code, setCode] = useState("# Write your code here...");
+
+  const handleEditorChange = (value) => {
+    setCode(value);
+    if (onCodeChange) {
+      onCodeChange(value); // Pass the updated code to the parent
+    }
+  };
+
   return (
     <div className={`code-editor-display ${className}`}>
       <div className="overlap-group">
         <div className="text-wrapper-3">Code Editor</div>
       </div>
 
-      <div className="text-wrapper-4">“Student Code Here”</div>
+      {/* CodeMirror Editor */}
+      <div className="editor-container">
+        <CodeMirror
+          value={code}
+          height="400px"
+          extensions={[python()]} // Set Python mode
+          theme="dark" // Use dark theme
+          onChange={handleEditorChange} // Correct event handler
+        />
+      </div>
     </div>
   );
 };

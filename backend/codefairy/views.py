@@ -1,3 +1,5 @@
+from openai import OpenAI
+
 from rest_framework import viewsets
 from .models import Problem, Submission, TestCase
 from .serializer import ProblemSerializer
@@ -7,13 +9,17 @@ from .serializer import TestCaseSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
 import subprocess
 import tempfile
 import os
+import json
+
 
 class ProblemViewSet(viewsets.ModelViewSet):
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
+
 
 class TestCase(viewsets.ModelViewSet):
     queryset = TestCase.objects.all()
@@ -25,7 +31,7 @@ class TestCase(viewsets.ModelViewSet):
 # }
 
 # How returned feedback would look like
-        
+
 # {
 #     "feedback": [
 #         {
@@ -48,9 +54,10 @@ class TestCase(viewsets.ModelViewSet):
 #     ]
 # }
 
+
 class SubmissionView(APIView):
     def post(self, request):
-        
+
         problem_id = request.data.get('problem')
         user_code = request.data.get('code')
 
@@ -69,27 +76,59 @@ class SubmissionView(APIView):
             test_input = test_case.input_data
             expected_output = test_case.expected_output
             output = execute_user_code(user_code, test_input)
-            
+
             if output["status"] == "success":
                 if output["output"] == expected_output:
+                    # Check if the user's code is actually dp.
+                    prompt = create_prompt(
+                        user_code, test_input, output["output"], expected_output, "Pass")
+
+                    ai_feedback, ai_error_lines = [
+                        (json.loads(call_openai(prompt)))[key]
+                        for key in ["feedback", "error_lines"]
+                    ]
+
                     feedback.append({
                         "input": test_input,
                         "output": output["output"],
                         "expected": expected_output,
-                        "result": "Pass" 
+                        "result": "Pass",
+                        "ai_feedback": ai_feedback,
+                        "ai_error_lines": ai_error_lines
                     })
                 else:
+                    prompt = create_prompt(
+                        user_code, test_input, output["output"], expected_output, "Fail")
+
+                    ai_feedback, ai_error_lines = [
+                        (json.loads(call_openai(prompt)))[key]
+                        for key in ["feedback", "error_lines"]
+
+                    ]
                     feedback.append({
                         "input": test_input,
                         "output": output["output"],
                         "expected": expected_output,
-                        "result": "Fail"
+                        "result": "Fail",
+                        "ai_feedback": ai_feedback,
+                        "ai_error_lines": ai_error_lines
                     })
             else:
+                prompt = create_prompt(
+                    user_code, test_input, output["output"], expected_output, "Error")
+
+                ai_feedback, ai_error_lines = [
+                    (json.loads(call_openai(prompt)))[key]
+                    for key in ["feedback", "error_lines"]
+
+                ]
+
                 feedback.append({
                     "input": test_input,
                     "error": output["error"],
-                    "result": "Error"
+                    "result": "Error",
+                    "ai_feedback": ai_feedback,
+                    "ai_error_lines": ai_error_lines
                 })
 
         submission_data = {
@@ -103,8 +142,9 @@ class SubmissionView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({"feedback": serializer.data["feedback"]}, status=status.HTTP_201_CREATED)
-            
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 def execute_user_code(user_code, test_input):
 
@@ -116,7 +156,8 @@ def execute_user_code(user_code, test_input):
 
 if __name__ == "__main__":
     try:
-        print(DP({test_input}))
+        sol = Solution()
+        print(sol.climbStairs({test_input}))
     except Exception as e:
         print(f"Error: {{e}}")
 """
@@ -142,3 +183,141 @@ if __name__ == "__main__":
         return {"status": "error", "error": "Code execution timed out"}
     except Exception as e:
         return {"status": "error", "error": str(e)}
+
+
+def create_prompt(user_code, test_input, user_output, expected_output, result):
+    # NOTE: Result could be an enum instead of a string.
+    description_body = "\n".join([
+        "**Description**",
+        "",
+        "The student's code has no errors.",
+        "",
+        "However, check the student's code and see if the student is using dynamic programming.",
+    ]) if result == "Pass" else "\n".join([
+        "**Description**",
+        "",
+        f"The student's code had the following error on test case `{test_input}`:",
+        "",
+        f"This was the student's result: `{user_output}`.",
+        "",
+        f"This was the expected result: `{expected_output}`.",
+    ])
+
+    prompt = "\n".join([
+        "I will give you the following list of items: LeetCode Question Body, Student code, Description, Expert code, Expert step-by-step solution, and my request.",
+        "Each item in this list will be separated by the following divider: ##########",
+        "",
+        "##########",
+        "",
+        "**LeetCode Question Body**",
+        "",
+        "You are climbing a staircase. It takes n steps to reach the top.",
+        "",
+        "Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?",
+        "",
+        "Example 1:",
+        "",
+        "Input: n = 2",
+        "Output: 2",
+        "Explanation: There are two ways to climb to the top.",
+        "1. 1 step + 1 step",
+        "2. 2 steps",
+        "Example 2:",
+        "",
+        "Input: n = 3",
+        "Output: 3",
+        "Explanation: There are three ways to climb to the top.",
+        "1. 1 step + 1 step + 1 step",
+        "2. 1 step + 2 steps",
+        "3. 2 steps + 1 step",
+        " ",
+        "Constraints:",
+        "1 <= n <= 45",
+        "",
+        "##########",
+        "",
+        "**Student code**",
+        "",
+        "The following was the student's answer to the previous code.",
+        "",
+        "```py",
+        user_code,
+        "```",
+        "",
+        "##########",
+        "",
+        description_body,
+        "",
+        "##########",
+        "",
+        "**Expert code**",
+        "",
+        "This is the expert solution to the LeetCode problem stated above:",
+        "",
+        "```py",
+        "class Solution:",
+        "    def climbStairs(self, n: int) -> int:",
+        "        if n == 0 or n == 1:",
+        "            return 1",
+        "        prev, curr = 1, 1",
+        "        for i in range(2, n+1):",
+        "            temp = curr",
+        "            curr = prev + curr",
+        "            prev = temp",
+        "        return curr",
+        "```",
+        "",
+        "##########",
+        "",
+        "**Expert step-by-step solution**",
+        "",
+        "This is the expert's thought process when solving a dynamic programming problem:",
+        "",
+        "1. Determine the constraints.",
+        "2. Find the recursive pattern.",
+        "3. Create a memo to store previous calculations.",
+        "4. Handle the base cases.",
+        "5. Write the inductive step in terms of previous steps. When doing this, use the pre-computed values in the memo instead of recursively calling the function.",
+        "",
+        "##########",
+        "",
+        "Given the above list, your task is to figure out what part of the expert step the student is missing, and what line numbers in the student's code is errorneous.",
+        "",
+        "Check the failing test case and figure out what part of the student's code is resonsible.",
+        "",
+        "Compare the student code to the expert code and the expert step-by-step solution to find what step the student is missing.",
+        "",
+        "Your response should be a JSON with the following fields and types:",
+        "```ts",
+        "{",
+        "    'feedback': string,",
+        "    'error_lines': number[]",
+        "}",
+        "```",
+        "",
+        "The `feedback` field should include what step in the expert step-by-step solution the student code is missing, and a short feedback on how the student can improve their code. If the student's code is a correct dynamic programing solution, reply with 'Awesome work! Your code is correct.'. DO NOT include anything else in this field.",
+        "",
+        "The `error_lines` field should be a list of line numbers where the error happened. For example, if lines 6 through 10 in the student's code is causing an error, the value of the field should be `[6, 7, 8, 9, 10]`. For another example, if line 2 is causing an error, the value of the field should be `[2]`. If the student's code is a correct dynamic programming solution, this should be an empty list. DO NOT include anything else.",
+        "",
+        "ONLY return the JSON object as a response. DO NOT return anything else. DO NOT include the markdown code block such as ```json and ```.",
+    ])
+
+    return prompt
+
+
+def call_openai(prompt):
+    client = OpenAI(
+        api_key="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"
+    )
+
+    chat_completion = client.chat.completions.create(
+        messages=[
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+        model="gpt-4o",
+    )
+
+    return (chat_completion.choices[0].message.content)

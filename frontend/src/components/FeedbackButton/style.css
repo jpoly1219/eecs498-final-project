@@ -1,0 +1,22 @@
+.feedback-button {
+    background-color: #373737;
+    border-radius: 10px;
+    height: 29px;
+    position: relative;
+    width: 125px;
+  }
+  
+  .feedback-button .feedback {
+    color: #ffffff;
+    font-family: "Inter", Helvetica;
+    font-size: 24px;
+    font-weight: 400;
+    left: 7px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: -1px;
+    white-space: nowrap;
+    width: 118px;
+  }
+  

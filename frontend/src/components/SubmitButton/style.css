@@ -1,0 +1,28 @@
+.submit-button {
+    all: unset;
+    align-items: center;
+    background-color: #6faa5a;
+    border-radius: 10px;
+    box-sizing: border-box;
+    display: flex;
+    gap: 10px;
+    height: 67px;
+    justify-content: center;
+    padding: 13px 22px;
+    position: relative;
+    width: 216px;
+  }
+  
+  .submit-button .div {
+    color: #ffffff;
+    font-family: "Inter", Helvetica;
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    margin-bottom: -0.50px;
+    margin-top: -2.50px;
+    position: relative;
+    width: fit-content;
+  }
+  

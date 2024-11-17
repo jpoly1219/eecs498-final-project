@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Header from './components/Header';
+import ProblemTab from './components/ProblemTab';
+import CodeEditor from './components/CodeEditor';
+import FeedbackPanel from './components/FeedbackPanel';
+import './App.css'; // Anima styles
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header />
+      <div className="content">
+        <ProblemTab />
+        <CodeEditor />
+        <FeedbackPanel />
+      </div>
     </div>
   );
-}
+};
 
 export default App;

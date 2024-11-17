@@ -1,0 +1,514 @@
+.main-view {
+    background-color: #0f0f0f;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .main-view .div {
+    background-color: #0f0f0f;
+    width: 1280px;
+    height: 800px;
+    position: relative;
+  }
+  
+  .main-view .upper-right-frame {
+    position: absolute;
+    width: 630px;
+    height: 366px;
+    top: 80px;
+    left: 640px;
+    background-color: #1b1b1b;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .main-view .overlap-group {
+    position: absolute;
+    width: 630px;
+    height: 733px;
+    top: 40px;
+    left: 0;
+  }
+  
+  .main-view .rectangle {
+    position: absolute;
+    width: 618px;
+    height: 733px;
+    top: 0;
+    left: 0;
+    background-color: #262626;
+    box-shadow: 0px 4px 4px #00000040;
+  }
+  
+  .main-view .rectangle-2 {
+    position: absolute;
+    width: 16px;
+    height: 307px;
+    top: 0;
+    left: 614px;
+    background-color: #d9d9d9;
+  }
+  
+  .main-view .rectangle-3 {
+    position: absolute;
+    width: 11px;
+    height: 268px;
+    top: 15px;
+    left: 617px;
+    background-color: #5c5c5c;
+  }
+  
+  .main-view .polygon {
+    position: absolute;
+    width: 10px;
+    height: 8px;
+    top: 4px;
+    left: 618px;
+  }
+  
+  .main-view .img {
+    position: absolute;
+    width: 10px;
+    height: 8px;
+    top: 298px;
+    left: 618px;
+  }
+  
+  .main-view .rectangle-4 {
+    position: absolute;
+    width: 249px;
+    height: 25px;
+    top: 105px;
+    left: 17px;
+    background-color: #b4ed5980;
+  }
+  
+  .main-view .class-solution {
+    position: absolute;
+    top: 17px;
+    left: 14px;
+    font-family: "Istok Web", Helvetica;
+    font-weight: 400;
+    color: #fffcfc;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .main-view .problem {
+    position: absolute;
+    width: 127px;
+    top: 9px;
+    left: 14px;
+    font-family: "Istok Web", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .main-view .polygon-2 {
+    position: absolute;
+    width: 13px;
+    height: 12px;
+    top: 719px;
+    left: -1120px;
+  }
+  
+  .main-view .upper-right-frame-2 {
+    position: absolute;
+    width: 628px;
+    height: 315px;
+    top: 457px;
+    left: 640px;
+    background-color: #1b1b1b;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .main-view .overlap {
+    position: absolute;
+    width: 626px;
+    height: 307px;
+    top: 8px;
+    left: 0;
+  }
+  
+  .main-view .overlap-2 {
+    position: absolute;
+    width: 626px;
+    height: 307px;
+    top: 0;
+    left: 0;
+  }
+  
+  .main-view .rectangle-5 {
+    height: 246px;
+    top: 32px;
+    position: absolute;
+    width: 618px;
+    left: 0;
+    background-color: #262626;
+    box-shadow: 0px 4px 4px #00000040;
+  }
+  
+  .main-view .rectangle-6 {
+    width: 17px;
+    height: 307px;
+    left: 609px;
+    position: absolute;
+    top: 0;
+    background-color: #d9d9d9;
+  }
+  
+  .main-view .rectangle-7 {
+    width: 11px;
+    height: 263px;
+    top: 15px;
+    left: 611px;
+    position: absolute;
+    background-color: #5c5c5c;
+  }
+  
+  .main-view .polygon-3 {
+    left: 612px;
+    position: absolute;
+    width: 10px;
+    height: 8px;
+    top: 4px;
+  }
+  
+  .main-view .polygon-4 {
+    position: absolute;
+    width: 10px;
+    height: 8px;
+    top: 294px;
+    left: 611px;
+  }
+  
+  .main-view .text-wrapper {
+    width: 127px;
+    top: 1px;
+    left: 14px;
+    font-size: 20px;
+    position: absolute;
+    font-family: "Istok Web", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .main-view .polygon-5 {
+    position: absolute;
+    width: 13px;
+    height: 12px;
+    top: 342px;
+    left: -1120px;
+  }
+  
+  .main-view .polygon-6 {
+    position: absolute;
+    width: 13px;
+    height: 12px;
+    top: -8px;
+    left: -1126px;
+  }
+  
+  .main-view .polygon-7 {
+    position: absolute;
+    width: 13px;
+    height: 12px;
+    top: 10px;
+    left: -1120px;
+  }
+  
+  .main-view .lower-right-frame {
+    position: absolute;
+    width: 618px;
+    height: 692px;
+    top: 80px;
+    left: 11px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .main-view .overlap-3 {
+    position: relative;
+    width: 610px;
+    height: 660px;
+  }
+  
+  .main-view .rectangle-8 {
+    position: absolute;
+    width: 128px;
+    height: 40px;
+    top: 13px;
+    left: 10px;
+    background-color: #262626;
+    border-radius: 10px;
+  }
+  
+  .main-view .rectangle-9 {
+    position: absolute;
+    width: 128px;
+    height: 40px;
+    top: 12px;
+    left: 286px;
+    background-color: #686868;
+    border-radius: 10px;
+  }
+  
+  .main-view .rectangle-10 {
+    position: absolute;
+    width: 128px;
+    height: 40px;
+    top: 13px;
+    left: 148px;
+    background-color: #686868;
+    border-radius: 10px;
+  }
+  
+  .main-view .text-wrapper-2 {
+    position: absolute;
+    width: 107px;
+    top: 20px;
+    left: 20px;
+    font-family: "Istok Web", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .main-view .testing {
+    position: absolute;
+    width: 107px;
+    top: 19px;
+    left: 148px;
+    font-family: "Istok Web", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .main-view .feedback-window {
+    position: absolute;
+    width: 610px;
+    height: 660px;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+  }
+  
+  .main-view .overlap-4 {
+    position: relative;
+    width: 618px;
+    height: 699px;
+    top: 9px;
+  }
+  
+  .main-view .overlap-group-2 {
+    position: absolute;
+    width: 618px;
+    height: 699px;
+    top: 0;
+    left: 0;
+  }
+  
+  .main-view .rectangle-11 {
+    height: 662px;
+    top: 37px;
+    position: absolute;
+    width: 618px;
+    left: 0;
+    background-color: #262626;
+    box-shadow: 0px 4px 4px #00000040;
+  }
+  
+  .main-view .rectangle-12 {
+    position: absolute;
+    width: 617px;
+    height: 68px;
+    top: 121px;
+    left: 1px;
+    background-color: #68686880;
+  }
+  
+  .main-view .feedback-text {
+    position: absolute;
+    width: 586px;
+    top: 49px;
+    left: 10px;
+    font-family: "Istok Web", Helvetica;
+    font-weight: 400;
+    color: transparent;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .main-view .span {
+    color: #ffffff;
+  }
+  
+  .main-view .text-wrapper-3 {
+    color: #aade59;
+  }
+  
+  .main-view .text-wrapper-4 {
+    color: #4c6ee9;
+    text-decoration: underline;
+  }
+  
+  .main-view .text-wrapper-5 {
+    color: #f9faff;
+  }
+  
+  .main-view .rectangle-13 {
+    width: 16px;
+    height: 638px;
+    left: 594px;
+    position: absolute;
+    top: 0;
+    background-color: #d9d9d9;
+  }
+  
+  .main-view .rectangle-14 {
+    width: 13px;
+    height: 547px;
+    top: 36px;
+    left: 596px;
+    position: absolute;
+    background-color: #5c5c5c;
+  }
+  
+  .main-view .polygon-8 {
+    left: 598px;
+    position: absolute;
+    width: 10px;
+    height: 8px;
+    top: 4px;
+  }
+  
+  .main-view .polygon-9 {
+    position: absolute;
+    width: 10px;
+    height: 8px;
+    top: 629px;
+    left: 596px;
+  }
+  
+  .main-view .text-wrapper-6 {
+    width: 108px;
+    top: 12px;
+    left: 294px;
+    font-size: 16px;
+    position: absolute;
+    font-family: "Istok Web", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .main-view .run-pannel {
+    position: absolute;
+    width: 523px;
+    height: 69px;
+    top: 7px;
+    left: 426px;
+  }
+  
+  .main-view .overlap-5 {
+    position: relative;
+    width: 316px;
+    height: 62px;
+    top: 3px;
+    left: 81px;
+    background-color: #1b1b1b;
+    border-radius: 10px;
+  }
+  
+  .main-view .overlap-group-3 {
+    position: absolute;
+    width: 135px;
+    height: 45px;
+    top: 8px;
+    left: 8px;
+    background-color: #262626;
+    border-radius: 10px;
+  }
+  
+  .main-view .text-wrapper-7 {
+    position: absolute;
+    width: 64px;
+    top: 4px;
+    left: 50px;
+    font-family: "Istok Web", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 24px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .main-view .polygon-10 {
+    position: absolute;
+    width: 24px;
+    height: 29px;
+    top: 8px;
+    left: 15px;
+  }
+  
+  .main-view .div-wrapper {
+    position: absolute;
+    width: 135px;
+    height: 45px;
+    top: 8px;
+    left: 163px;
+    background-color: #262626;
+    border-radius: 10px;
+  }
+  
+  .main-view .text-wrapper-8 {
+    position: absolute;
+    top: 4px;
+    left: 30px;
+    font-family: "Istok Web", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 24px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .main-view .overlap-6 {
+    position: absolute;
+    width: 202px;
+    height: 55px;
+    top: 14px;
+    left: 16px;
+    background-color: #262626;
+    border-radius: 10px;
+  }
+  
+  .main-view .text-wrapper-9 {
+    position: absolute;
+    top: 9px;
+    left: 70px;
+    font-family: "Istok Web", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 24px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  

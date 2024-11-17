@@ -1,0 +1,48 @@
+.code-editor-display {
+  background-color: #1e1e1e; /* Dark background for the editor */
+  border-radius: 10px; /* Rounded corners */
+  height: 430px; /* Adjusted height */
+  width: 675px; /* Match width of .bottomframe-default */
+  max-width: 800px; /* Optional: Limit the maximum width */
+  overflow: hidden; /* Ensure no content overflows */
+  position: relative; /* Keep relative positioning for inner elements */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin: 0 auto; /* Center the editor */
+  padding: 16px; /* Add padding for better spacing */
+  display: flex;
+  flex-direction: column;
+}
+
+.code-editor-display .overlap-group {
+  background-color: #0c0b0b; /* Slightly darker header background */
+  height: 38px;
+  width: 100%; /* Adjust to fill the parent container */
+  display: flex; /* Flex layout for centering content */
+  align-items: center; /* Center text vertically */
+  justify-content: space-between; /* Space between title and other elements */
+  padding: 0 16px; /* Add padding for content */
+  border-bottom: 1px solid #333; /* Optional: Add a border for separation */
+}
+
+.code-editor-display .text-wrapper-3 {
+  color: #ffffff; /* White text color */
+  font-family: "Inter", Helvetica, Arial, sans-serif; /* Added fallback fonts */
+  font-size: 18px; /* Slightly smaller font size for better readability */
+  font-weight: 500; /* Slightly bolder weight */
+  text-align: center;
+  letter-spacing: 0.5px; /* Optional: Add subtle spacing */
+}
+
+.code-editor-display .editor-container {
+  flex: 1; /* Allow the editor to fill the remaining space */
+  margin-top: 16px; /* Add spacing between header and editor */
+  height: calc(100% - 54px); /* Adjust height dynamically */
+  border: 1px solid #3c3c3c; /* Add a subtle border */
+  border-radius: 4px; /* Slightly rounded corners */
+  overflow: hidden; /* Prevent content overflow */
+}
+
+.CodeMirror {
+  height: 100%; /* Ensure CodeMirror takes full height */
+  font-size: 14px; /* Adjust font size */
+}

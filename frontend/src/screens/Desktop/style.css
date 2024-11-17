@@ -1,0 +1,54 @@
+.desktop {
+    background-color: #373737;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .desktop .div-2 {
+    background-color: #373737;
+    height: 1024px;
+    position: relative;
+    width: 1440px;
+  }
+  
+  .desktop .overlap {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    height: 67px;
+    left: 12px;
+    position: absolute;
+    top: 14px;
+    width: 216px;
+  }
+  
+  .desktop .problems-button-instance {
+    left: 23px !important;
+    top: 3px !important;
+  }
+  
+  .desktop .submit-button-instance {
+    left: 1188px !important;
+    position: absolute !important;
+    top: 14px !important;
+  }
+  
+  .desktop .problem-display-instance {
+    left: 17px !important;
+    position: absolute !important;
+    top: 103px !important;
+  }
+  
+  .desktop .code-editor-display-instance {
+    left: 729px !important;
+    position: absolute !important;
+    top: 105px !important;
+  }
+  
+  .desktop .bottomframe-default-instance {
+    left: 729px !important;
+    position: absolute !important;
+    top: 542px !important;
+  }
+  

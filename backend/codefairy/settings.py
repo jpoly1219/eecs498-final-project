@@ -28,6 +28,17 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+# settings.py in backend/codefairy
+import os
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'codefairy/static',  # Update to point to your app's static directory
+]
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -54,7 +65,7 @@ ROOT_URLCONF = 'codefairy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'codefairy/templates/frontend'],  # Add this path
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -66,6 +77,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'codefairy.wsgi.application'
 
@@ -115,9 +127,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

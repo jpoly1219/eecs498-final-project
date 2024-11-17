@@ -1,0 +1,21 @@
+.problems-button {
+    align-items: center;
+    display: inline-flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 10px;
+    position: relative;
+  }
+  
+  .problems-button .text-wrapper {
+    color: #ffffff;
+    font-family: "Inter", Helvetica;
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    margin-top: -1.00px;
+    position: relative;
+    width: fit-content;
+  }
+  

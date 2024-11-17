@@ -1,0 +1,43 @@
+.bottomframe-default {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    height: 439px;
+    overflow: hidden;
+    position: relative;
+    width: 675px;
+  }
+  
+  .bottomframe-default .overlap-group-2 {
+    background-color: #0c0b0b;
+    height: 38px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 675px;
+  }
+  
+  .bottomframe-default .feedback-button-instance {
+    left: 12px !important;
+    position: absolute !important;
+    top: 7px !important;
+  }
+  
+  .bottomframe-default .test-casebutton {
+    left: 146px !important;
+    position: absolute !important;
+    top: 7px !important;
+  }
+  
+  .bottomframe-default .p {
+    color: #ffffff;
+    font-family: "Inter", Helvetica;
+    font-size: 24px;
+    font-weight: 400;
+    left: 15px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 49px;
+    width: 645px;
+  }
+  

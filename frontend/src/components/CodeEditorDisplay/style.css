@@ -1,0 +1,45 @@
+.code-editor-display {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    height: 425px;
+    overflow: hidden;
+    position: relative;
+    width: 689px;
+  }
+  
+  .code-editor-display .overlap-group {
+    background-color: #0c0b0b;
+    height: 38px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 706px;
+  }
+  
+  .code-editor-display .text-wrapper-3 {
+    color: #ffffff;
+    font-family: "Inter", Helvetica;
+    font-size: 24px;
+    font-weight: 400;
+    left: 13px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 6px;
+    width: 167px;
+  }
+  
+  .code-editor-display .text-wrapper-4 {
+    color: #ffffff;
+    font-family: "Inter", Helvetica;
+    font-size: 24px;
+    font-weight: 400;
+    left: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 48px;
+    width: 643px;
+  }
+  

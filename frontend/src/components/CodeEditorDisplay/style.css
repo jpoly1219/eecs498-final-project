@@ -1,8 +1,8 @@
 .code-editor-display {
   background-color: #1e1e1e; /* Dark background for the editor */
   border-radius: 10px; /* Rounded corners */
-  height: 500px; /* Adjusted height */
-  width: 100%; /* Use full width by default, adjust in the parent container */
+  height: 430px; /* Adjusted height */
+  width: 675px; /* Match width of .bottomframe-default */
   max-width: 800px; /* Optional: Limit the maximum width */
   overflow: hidden; /* Ensure no content overflows */
   position: relative; /* Keep relative positioning for inner elements */

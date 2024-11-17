@@ -16,14 +16,16 @@ export const Desktop = () => {
 
   // Callback to handle the submit action
   const handleSubmit = async () => {
-    const placeholderUrl = "https://placeholder.url/api/submit"; // Replace with your API URL
+    const placeholderUrl = "http://127.0.0.1.8000/submissions/"; // Replace with your API URL
     try {
       const response = await fetch(placeholderUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ code }), // Send the current code as the request body
+        body: JSON.stringify({           
+          "problem":1,
+          "code": code }), // Send the current code as the request body
       });
 
       if (response.ok) {

@@ -145,8 +145,8 @@ Your response should be a JSON with the following fields and types:
 }
 ```
 
-The `feedback` field should include what step in the expert step-by-step solution the student code is missing, and a short feedback on how the student can improve their code. If the student's code is a correct dynamic programing solution, reply with 'Awesome work! Your code is correct.'. DO NOT include anything else in this field.
+The `feedback` field should include what step in the expert step-by-step solution the student code is missing, and a short feedback on how the student can improve their code. If the student's code is correct and uses dynamic programing, reply with 'Awesome work! Your code is correct.'. DO NOT include anything else in this field.
 
-The `error_lines` field should be a list of line numbers where the error happened. For example, if lines 6 through 10 in the student's code is causing an error, the value of the field should be `[6, 7, 8, 9, 10]`. For another example, if line 2 is causing an error, the value of the field should be `[2]`. If the student's code is a correct dynamic programming solution, this should be an empty list. DO NOT include anything else.
+The `error_lines` field should be a list of line numbers where the error happened. Lines are represented by the newline character, and each newline character adds a new line. Which means that if there are no newline characters, there is only one line, line number 1. Line numbres are 1-indexed. For example, if lines 6 through 10 in the student's code is causing an error, the value of the field should be `[6, 7, 8, 9, 10]`. For another example, if line 2 is causing an error, the value of the field should be `[2]`. If the student's code is correct and uses dynamic programming solution, this should be an empty list. DO NOT include anything else.
 
 ONLY return the JSON object as a response. DO NOT return anything else. DO NOT include the markdown code block such as ```json and ```.

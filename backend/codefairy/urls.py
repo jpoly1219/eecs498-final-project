@@ -1,16 +1,16 @@
 from django.contrib import admin
 from django.urls import path
-from . import views  # Import views from your Django app
 from django.conf.urls import include
+from rest_framework.routers import DefaultRouter
+from .views import ProblemViewSet, SubmissionView, TestCase
+
+router = DefaultRouter()
+router.register(r'problems', ProblemViewSet)  # Register Problem endpoints
+router.register(r'test_cases', TestCase)
+
 
 urlpatterns = [
-    path('', views.frontend, name='frontend'),
-    path('admin/', admin.site.urls),
-    path('api-auth', include('rest_framework.urls')),
-    path('', views.index, name='index'),  # Add this line to point to your frontend
-
+    path('', include(router.urls)),
+    path('submissions/', SubmissionView.as_view(), name='submission')
 ]
 
-
-
-    

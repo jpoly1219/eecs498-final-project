@@ -27,27 +27,17 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# settings.py in backend/codefairy
-import os
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-STATICFILES_DIRS = [
-    BASE_DIR / 'codefairy/static',  # Update to point to your app's static directory
-]
-
-
-
-
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'codefairy',
 ]
 
 MIDDLEWARE = [

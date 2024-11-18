@@ -46,3 +46,7 @@
   height: 100%; /* Ensure CodeMirror takes full height */
   font-size: 14px; /* Adjust font size */
 }
+
+.highlighted-line {
+  background-color: rgba(255, 255, 0, 0.3); /* Light yellow highlight */
+}

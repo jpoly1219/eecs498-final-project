@@ -1,21 +1,41 @@
-/*
-We're constantly improving the code you see. 
-Please share your feedback here: https://form.asana.com/?k=uvp-HPgd3_hyoXRBw1IcNg&d=1152665201300829
-*/
+import React, { useState } from "react";
+import { FeedbackButton } from "../FeedbackButton/FeedbackButton";
+import { TestCaseButton } from "../TestCaseButton/TestCaseButton";
 
-import React from "react";
-import { FeedbackButton } from "../FeedbackButton";
 import "./style.css";
 
-export const BottomframeDefault = ({ className }) => {
+export const BottomframeDefault = ({ className, testCaseText, feedbackText }) => {
+  const [isFeedbackVisible, setIsFeedbackVisible] = useState(false); // State to toggle content
+
+  const getDisplayedText = () => {
+    if (isFeedbackVisible) {
+      return feedbackText && feedbackText.trim() !== "" ?  feedbackText : "No Feedback Yet"; //feedbackText || "No Feedback Yet"; // Default message if no feedback
+    }
+    return testCaseText && testCaseText.trim() !== "" ? testCaseText : "No Test Results Yet"; //testCaseText || "No Test Results Yet"; // Default message if no test case results
+  };
+
   return (
     <div className={`bottomframe-default ${className}`}>
       <div className="overlap-group-2">
-        <FeedbackButton className="feedback-button-instance" text="Feedback" />
-        <FeedbackButton className="test-casebutton" text="Test Case" />
+        {/* Test Case Button */}
+        <TestCaseButton
+          className={`test-case-button ${!isFeedbackVisible ? "active" : ""}`}
+          text="Test Case"
+          onClick={() => setIsFeedbackVisible(false)} // Switch to test case content
+        />
+
+        {/* Feedback Button */}
+        <FeedbackButton
+          className={`feedback-button ${isFeedbackVisible ? "active" : ""}`}
+          text="Feedback"
+          onClick={() => setIsFeedbackVisible(true)} // Switch to feedback content
+        />
       </div>
 
-      <p className="p">“Test Case Text Here “</p>
+      {/* Scrollable Content Section */}
+      <div className="bottomframe-content">
+        <p>{getDisplayedText()}</p> {/* Display appropriate content */}
+      </div>
     </div>
   );
 };

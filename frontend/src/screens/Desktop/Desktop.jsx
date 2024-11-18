@@ -7,30 +7,55 @@ import { SubmitButton } from "../../components/SubmitButton";
 import "./style.css";
 
 export const Desktop = () => {
-  const [code, setCode] = useState(""); // State to hold the code from the editor
+  const [code, setCode] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [testCaseResults, setTestCaseResults] = useState("");
+  const [highlightedLines, setHighlightedLines] = useState([]);
 
-  // Callback to update the code state when it changes in the editor
   const onCodeChange = (newCode) => {
     setCode(newCode);
   };
 
-  // Callback to handle the submit action
   const handleSubmit = async () => {
-    const placeholderUrl = "http://127.0.0.1:8000/submissions/"; // Replace with your API URL
+    const placeholderUrl = "http://127.0.0.1:8000/submissions/";
+
     try {
       const response = await fetch(placeholderUrl, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          "problem": 1,
-          "code": code
-        }), // Send the current code as the request body
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ problem: 1, code }),
       });
 
       if (response.ok) {
-        console.log("Code submitted successfully:", await response.json());
+        const data = await response.json();
+
+        const testCaseFormatted = data.feedback
+          .map(
+            (item) =>
+              `Test Case - Input: ${item.input}, Output: ${
+                item.output || item.error
+              }, Expected: ${item.expected}, Result: ${item.result}`
+          )
+          .join("\n");
+
+        const feedbackFormatted = data.feedback
+          .map(
+            (item) =>
+              `Input: ${item.input}, Output: ${
+                item.output || item.error
+              }, Expected: ${item.expected}, Result: ${
+                item.result
+              }, Feedback: ${item.ai_feedback}`
+          )
+          .join("\n");
+
+        const errorLines = data.feedback
+          .flatMap((item) => item.ai_error_lines)
+          .filter((line) => Number.isInteger(line) && line > 0);
+
+        setFeedback(feedbackFormatted);
+        setTestCaseResults(testCaseFormatted);
+        setHighlightedLines(errorLines);
       } else {
         console.error("Failed to submit code:", response.statusText);
       }
@@ -45,16 +70,18 @@ export const Desktop = () => {
         <div className="overlap">
           <ProblemsButton className="problems-button-instance" />
         </div>
-
-        {/* Pass the handleSubmit callback to the SubmitButton */}
         <SubmitButton className="submit-button-instance" onSubmit={handleSubmit} />
-
         <ProblemDisplay className="problem-display-instance" />
-
-        {/* Pass the onCodeChange callback to the CodeEditorDisplay */}
-        <CodeEditorDisplay className="code-editor-display-instance" onCodeChange={onCodeChange} />
-
-        <BottomframeDefault className="bottomframe-default-instance" />
+        <CodeEditorDisplay
+          className="code-editor-display-instance"
+          onCodeChange={onCodeChange}
+          highlightedLines={highlightedLines}
+        />
+        <BottomframeDefault
+          className="bottomframe-default-instance"
+          testCaseText={testCaseResults}
+          feedbackText={feedback}
+        />
       </div>
     </div>
   );

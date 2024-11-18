@@ -1,22 +1,21 @@
 .feedback-button {
-    background-color: #373737;
-    border-radius: 10px;
-    height: 29px;
-    position: relative;
-    width: 125px;
-  }
-  
-  .feedback-button .feedback {
-    color: #ffffff;
-    font-family: "Inter", Helvetica;
-    font-size: 24px;
-    font-weight: 400;
-    left: 7px;
-    letter-spacing: 0;
-    line-height: normal;
-    position: absolute;
-    top: -1px;
-    white-space: nowrap;
-    width: 118px;
-  }
-  
+  background-color: #373737;
+  border-radius: 10px;
+  height: 29px;
+  width: 125px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.feedback-button.active {
+  background-color: limegreen; /* Highlight active button */
+}
+
+.feedback-button .feedback {
+  color: #ffffff;
+  font-family: "Inter", Helvetica;
+  font-size: 18px;
+  text-align: center;
+}

@@ -1,0 +1,22 @@
+.test-case-button {
+    background-color: #373737;
+    border-radius: 10px;
+    height: 29px;
+    width: 125px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .test-case-button.active {
+    background-color: limegreen; /* Highlight active button */
+  }
+  
+  .test-case-button .button-text {
+    color: #ffffff;
+    font-family: "Inter", Helvetica;
+    font-size: 18px;
+    text-align: center;
+  }
+  

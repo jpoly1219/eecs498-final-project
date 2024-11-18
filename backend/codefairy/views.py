@@ -54,6 +54,27 @@ class TestCase(viewsets.ModelViewSet):
 #     ]
 # }
 
+# APIView to handle retrieving problem info on initial page load
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Problem
+
+# API view to retrieve problem details
+class ProblemDetailView(APIView):
+    def get(self, request):
+        try:
+            # Hardcoded to fetch problem with id = 1
+            problem = Problem.objects.get(id=1)
+            return Response({
+                "id": problem.id,
+                "title": problem.title,
+                "description": problem.description
+            }, status=status.HTTP_200_OK)
+        except Problem.DoesNotExist:
+            return Response({"error": "Problem not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
 
 class SubmissionView(APIView):
     def post(self, request):

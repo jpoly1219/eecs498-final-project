@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "react-monaco-editor": "^0.56.2"
+  },
+  "devDependencies": {
+    "react-app-rewired": "^2.2.1"
+  }
+}

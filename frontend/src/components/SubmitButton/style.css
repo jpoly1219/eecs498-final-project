@@ -25,4 +25,13 @@
     position: relative;
     width: fit-content;
   }
-  
+
+    /* Hover effect: Darker shade of green */
+  .submit-button:hover {
+    background-color: #5c944e; /* Darker shade of the original green */
+  }
+
+  /* Click effect: Blue color */
+  .submit-button.clicked {
+    background-color: #007bff; /* Blue color */
+  }

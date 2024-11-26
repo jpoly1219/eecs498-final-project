@@ -14,10 +14,13 @@ export const Desktop = () => {
 
   const onCodeChange = (newCode) => {
     setCode(newCode);
+    console.log(code)
   };
 
   const handleSubmit = async () => {
     const placeholderUrl = "http://127.0.0.1:8000/submissions/";
+
+    // console.log("payload:", JSON.stringify({ problem: 1, code }))
 
     try {
       const response = await fetch(placeholderUrl, {
@@ -32,8 +35,7 @@ export const Desktop = () => {
         const testCaseFormatted = data.feedback
           .map(
             (item) =>
-              `Test Case - Input: ${item.input}, Output: ${
-                item.output || item.error
+              `Test Case - Input: ${item.input}, Output: ${item.output || item.error
               }, Expected: ${item.expected}, Result: ${item.result}`
           )
           .join("\n");
@@ -41,10 +43,8 @@ export const Desktop = () => {
         const feedbackFormatted = data.feedback
           .map(
             (item) =>
-              `Input: ${item.input}, Output: ${
-                item.output || item.error
-              }, Expected: ${item.expected}, Result: ${
-                item.result
+              `Input: ${item.input}, Output: ${item.output || item.error
+              }, Expected: ${item.expected}, Result: ${item.result
               }, Feedback: ${item.ai_feedback}`
           )
           .join("\n");

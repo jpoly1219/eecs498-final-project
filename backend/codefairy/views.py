@@ -1,3 +1,4 @@
+from .models import Problem
 from openai import OpenAI
 
 from rest_framework import viewsets
@@ -54,13 +55,11 @@ class TestCase(viewsets.ModelViewSet):
 #     ]
 # }
 
+
 # APIView to handle retrieving problem info on initial page load
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Problem
 
 # API view to retrieve problem details
+
 class ProblemDetailView(APIView):
     def get(self, request):
         try:
@@ -73,7 +72,6 @@ class ProblemDetailView(APIView):
             }, status=status.HTTP_200_OK)
         except Problem.DoesNotExist:
             return Response({"error": "Problem not found"}, status=status.HTTP_404_NOT_FOUND)
-
 
 
 class SubmissionView(APIView):
@@ -136,7 +134,7 @@ class SubmissionView(APIView):
                     })
             else:
                 prompt = create_prompt(
-                    user_code, test_input, output["output"], expected_output, "Error")
+                    user_code, test_input, output["error"], expected_output, "Error")
 
                 ai_feedback, ai_error_lines = [
                     (json.loads(call_openai(prompt)))[key]
@@ -217,7 +215,8 @@ def create_prompt(user_code, test_input, user_output, expected_output, result):
     ]) if result == "Pass" else "\n".join([
         "**Description**",
         "",
-        f"The student's code had the following error on test case `{test_input}`:",
+        f"The student's code had the following error on test case `{
+            test_input}`:",
         "",
         f"This was the student's result: `{user_output}`.",
         "",
@@ -316,7 +315,8 @@ def create_prompt(user_code, test_input, user_output, expected_output, result):
         "}",
         "```",
         "",
-        f"The `error_lines` field should be a list of line numbers where the error happened. Where the error happened depends on what step the student's code is missing, and the student's output {user_output} for an input {test_input}, whereas the expected output is {expected_output}. For example, if the student is missing step 3, then you should only extract lines responsible for the missing step. Lines are represented by the newline character, and each newline character adds a new line. Which means that if there are no newline characters, there is only one line, line number 1. Line numbres are 1-indexed. For example, if lines 6 through 10 in the student's code is causing an error, the value of the field should be `[6, 7, 8, 9, 10]`. For another example, if line 2 is causing an error, the value of the field should be `[2]`. If the student's code is correct and uses dynamic programming solution, this should be an empty list. The lines you say here must correspond to the lines in the `feedback` field. DO NOT include lines that are unrelated. DO NOT include anything else.",
+        f"The `error_lines` field should be a list of line numbers where the error happened. Where the error happened depends on what step the student's code is missing, and the student's output {user_output} for an input {test_input}, whereas the expected output is {
+            expected_output}. For example, if the student is missing step 3, then you should only extract lines responsible for the missing step. Lines are represented by the newline character, and each newline character adds a new line. Which means that if there are no newline characters, there is only one line, line number 1. Line numbres are 1-indexed. For example, if lines 6 through 10 in the student's code is causing an error, the value of the field should be `[6, 7, 8, 9, 10]`. For another example, if line 2 is causing an error, the value of the field should be `[2]`. If the student's code is correct and uses dynamic programming solution, this should be an empty list. The lines you say here must correspond to the lines in the `feedback` field. DO NOT include lines that are unrelated. DO NOT include anything else.",
         "",
         "The `feedback` field should include what step in the expert step-by-step solution the student code is missing, and a short feedback on how the student can improve their code. You should say in your response what lines are responsible for the missing step, and say why. The lines you say here must correspond to the lines in the `error_lines` field. The student's code can be missing multiple steps, one step, or no steps. If the student's code is a correct dynamic programing solution, reply with 'Awesome work! Your code is correct.'. DO NOT include anything else in this field.",
         "",
@@ -330,7 +330,7 @@ def create_prompt(user_code, test_input, user_output, expected_output, result):
 
 def call_openai(prompt):
     client = OpenAI(
-        api_key="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"
+        api_key=""
     )
 
     chat_completion = client.chat.completions.create(

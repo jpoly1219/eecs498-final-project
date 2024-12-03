@@ -95,6 +95,7 @@ class SubmissionView(APIView):
             test_input = test_case.input_data
             expected_output = test_case.expected_output
             output = execute_user_code(user_code, test_input)
+            print("OUTPUT:", output)
 
             if output["status"] == "success":
                 if output["output"] == expected_output:
@@ -115,6 +116,7 @@ class SubmissionView(APIView):
                         "ai_feedback": ai_feedback,
                         "ai_error_lines": ai_error_lines
                     })
+                    break
                 else:
                     prompt = create_prompt(
                         user_code, test_input, output["output"], expected_output, "Fail")
@@ -132,6 +134,7 @@ class SubmissionView(APIView):
                         "ai_feedback": ai_feedback,
                         "ai_error_lines": ai_error_lines
                     })
+                    break
             else:
                 prompt = create_prompt(
                     user_code, test_input, output["error"], expected_output, "Error")
@@ -139,7 +142,6 @@ class SubmissionView(APIView):
                 ai_feedback, ai_error_lines = [
                     (json.loads(call_openai(prompt)))[key]
                     for key in ["feedback", "error_lines"]
-
                 ]
 
                 feedback.append({
@@ -149,11 +151,14 @@ class SubmissionView(APIView):
                     "ai_feedback": ai_feedback,
                     "ai_error_lines": ai_error_lines
                 })
+                break
 
+        print(feedback)
         submission_data = {
             "problem": problem.id,
             "code": user_code,
-            "feedback": feedback,  # Join feedback messages into a single string
+            # Join feedback messages into a single string
+            "feedback": feedback,
         }
 
         serializer = SubmissionSerializer(data=submission_data)
@@ -166,20 +171,26 @@ class SubmissionView(APIView):
 
 
 def execute_user_code(user_code, test_input):
-
     try:
+        # try:
+        #     compile(user_code, '<string>', 'exec')
+        # except SyntaxError as e:
+        #     return {"status": "error", "error": str(e)}
+
         # Create a temporary Python file for the user's code
         with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp_file:
-            script = f"""
-{user_code}
-
-if __name__ == "__main__":
-    try:
-        sol = Solution()
-        print(sol.climbStairs({test_input}))
-    except Exception as e:
-        print(f"Error: {{e}}")
-"""
+            script = "\n".join([
+                user_code,
+                "",
+                'if __name__ == "__main__":',
+                "    try:",
+                "        sol = Solution()",
+                f"        print(sol.climbStairs({test_input}))",
+                "    except Exception as e:",
+                '        print(f"{str(e)}")',
+                "        exit(1)"
+            ])
+            print(script)
             temp_file.write((script).encode('utf-8'))
             temp_file_path = temp_file.name
 
@@ -192,11 +203,12 @@ if __name__ == "__main__":
         )
 
         os.remove(temp_file_path)
+        print(result)
 
         if result.returncode == 0:
             return {"status": "success", "output": result.stdout.strip()}
         else:
-            return {"status": "error", "error": result.stderr.strip()}
+            return {"status": "error", "error": result.stdout.strip()}
 
     except subprocess.TimeoutExpired:
         return {"status": "error", "error": "Code execution timed out"}
@@ -209,21 +221,22 @@ def create_prompt(user_code, test_input, user_output, expected_output, result):
     description_body = "\n".join([
         "**Description**",
         "",
-        "The student's code has no errors.",
+        "Your student's code has no errors.",
         "",
-        "However, check the student's code and see if the student is using dynamic programming.",
+        "However, check your student's code and see if he is using dynamic programming.",
     ]) if result == "Pass" else "\n".join([
         "**Description**",
         "",
-        f"The student's code had the following error on test case `{
+        f"Your student's code had the following error on test case `{
             test_input}`:",
         "",
-        f"This was the student's result: `{user_output}`.",
+        f"This was his result: `{user_output}`.",
         "",
         f"This was the expected result: `{expected_output}`.",
     ])
 
     prompt = "\n".join([
+        "You are a helpful tutor at a university who is trying to teach your student how to solve a dynamic programming problem.",
         "I will give you the following list of items: LeetCode Question Body, Student code, Description, Expert code, Expert step-by-step solution, and my request.",
         "Each item in this list will be separated by the following divider: ##########",
         "",
@@ -258,7 +271,7 @@ def create_prompt(user_code, test_input, user_output, expected_output, result):
         "",
         "**Student code**",
         "",
-        "The following was the student's answer to the previous code.",
+        "The following was your student's answer to the previous code.",
         "",
         "```py",
         user_code,
@@ -300,12 +313,12 @@ def create_prompt(user_code, test_input, user_output, expected_output, result):
         "5. Write the inductive step in terms of previous steps. When doing this, use the pre-computed values in the memo instead of recursively calling the function.",
         "",
         "##########",
+        ""
+        "Given the above list, your task is to figure out what part of the expert step your student is missing, and what line numbers in his code is errorneous.",
         "",
-        "Given the above list, your task is to figure out what part of the expert step the student is missing, and what line numbers in the student's code is errorneous.",
+        "Check the failing test case and figure out what part of your student's code is resonsible.",
         "",
-        "Check the failing test case and figure out what part of the student's code is resonsible.",
-        "",
-        "Compare the student code to the expert code and the expert step-by-step solution to find what step the student is missing.",
+        "Compare your student's code to the expert code and the expert step-by-step solution to find what step he is missing.",
         "",
         "Your response should be a JSON with the following fields and types:",
         "```ts",
@@ -315,14 +328,16 @@ def create_prompt(user_code, test_input, user_output, expected_output, result):
         "}",
         "```",
         "",
-        f"The `error_lines` field should be a list of line numbers where the error happened. Where the error happened depends on what step the student's code is missing, and the student's output {user_output} for an input {test_input}, whereas the expected output is {
-            expected_output}. For example, if the student is missing step 3, then you should only extract lines responsible for the missing step. Lines are represented by the newline character, and each newline character adds a new line. Which means that if there are no newline characters, there is only one line, line number 1. Line numbres are 1-indexed. For example, if lines 6 through 10 in the student's code is causing an error, the value of the field should be `[6, 7, 8, 9, 10]`. For another example, if line 2 is causing an error, the value of the field should be `[2]`. If the student's code is correct and uses dynamic programming solution, this should be an empty list. The lines you say here must correspond to the lines in the `feedback` field. DO NOT include lines that are unrelated. DO NOT include anything else.",
+        f"The `error_lines` field should be a list of line numbers where the error happened. The error cannot occur in the first two lines, so do not include those as an option. Where the error happened depends on what step your student's code is missing, and your student's output {user_output} for an input {test_input}, whereas the expected output is {
+            expected_output}. For example, if your student is missing step 3, then you should only extract lines responsible for the missing step. Lines are represented by the newline character, and each newline character adds a new line. Which means that if there are no newline characters, there is only one line, line number 1. Line numbres are 1-indexed. For example, if lines 6 through 10 in your student's code is causing an error, the value of the field should be `[6, 7, 8, 9, 10]`. For another example, if line 2 is causing an error, the value of the field should be `[2]`. If your student's code is correct and uses dynamic programming solution, this should be an empty list. The lines you say here must correspond to the lines in the `feedback` field. DO NOT include lines that are unrelated. DO NOT include anything else.",
         "",
-        "The `feedback` field should include what step in the expert step-by-step solution the student code is missing, and a short feedback on how the student can improve their code. You should say in your response what lines are responsible for the missing step, and say why. The lines you say here must correspond to the lines in the `error_lines` field. The student's code can be missing multiple steps, one step, or no steps. If the student's code is a correct dynamic programing solution, reply with 'Awesome work! Your code is correct.'. DO NOT include anything else in this field.",
+        "The `feedback` field should include what step in the expert step-by-step solution your student's code is missing, and a short feedback on how your student can improve their code. You should say in your response what lines are responsible for the missing step, and say why. The lines you say here must correspond to the lines in the `error_lines` field. Your student's code can be missing multiple steps, one step, or no steps. If your student's code is a correct dynamic programing solution, reply with 'Awesome work! Your code is correct.'. DO NOT include anything else in this field. If your student's code has a syntax error, just say that the code has a syntax error.",
         "",
-        "Before creating a response, you should go through the student's code line by line to determine what each line is doing. When you are giving feedback, make sure you consult this analysis. Sometimes you make the mistake of describing the correct error for the wrong line. DO NOT add this to your response.",
+        "Before creating a response, you should go through your student's code line by line to determine what each line is doing. When you are giving feedback, make sure you consult this analysis. Sometimes you make the mistake of describing the correct error for the wrong line. DO NOT add this to your response.",
         "",
         "ONLY return the JSON object as a response. DO NOT return anything else. DO NOT include the markdown code block such as ```json and ```.",
+        "",
+        "In your feedback, please address the student as if you are having a conversation with him."
     ])
 
     return prompt
@@ -330,7 +345,7 @@ def create_prompt(user_code, test_input, user_output, expected_output, result):
 
 def call_openai(prompt):
     client = OpenAI(
-        api_key=""
+        api_key="<YOUR KEY HERE>"
     )
 
     chat_completion = client.chat.completions.create(

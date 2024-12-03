@@ -5,7 +5,9 @@ import { Decoration, ViewPlugin } from "@codemirror/view";
 import { oneDark } from "@codemirror/theme-one-dark"; // Optional dark theme
 import "./style.css";
 
-export const CodeEditorDisplay = ({ className, onCodeChange, highlightedLines = [] }) => {
+export const CodeEditorDisplay = (
+  { className, onCodeChange, highlightedLines = [] },
+) => {
   const [linesToHighlight, setLinesToHighlight] = useState([]);
   const [totalLines, setTotalLines] = useState(1);
 
@@ -24,17 +26,17 @@ export const CodeEditorDisplay = ({ className, onCodeChange, highlightedLines = 
             .filter((line) => line <= totalLines)
             .sort()
             .map((line) => {
-              console.log(line)
+              console.log(line);
               return Decoration.line({
                 attributes: { class: "error-line" },
-              }).range(view.state.doc.line(line).from)
-            })
-        )
+              }).range(view.state.doc.line(line).from);
+            }),
+        );
       }
     },
     {
-      decorations: (v) => v.decorations
-    }
+      decorations: (v) => v.decorations,
+    },
   );
 
   // Effect to update error lines.
@@ -52,18 +54,17 @@ export const CodeEditorDisplay = ({ className, onCodeChange, highlightedLines = 
     return () => {
       document.head.removeChild(style);
     };
-
   }, [highlightedLines]);
 
   return (
     <div className={`code-editor-display ${className}`}>
       <CodeMirror
-        value="# Write your code here..."
+        value={`class Solution:\n    def climbStairs(self, n: int) -> int:\n        # Your code here...`}
         height="400px"
         theme={oneDark}
         extensions={[
           python(), // Enable Python syntax
-          lineHighlightExtension
+          lineHighlightExtension,
         ]}
         onChange={handleEditorChange} // Handle changes
       />

@@ -4,14 +4,21 @@ import { TestCaseButton } from "../TestCaseButton/TestCaseButton";
 
 import "./style.css";
 
-export const BottomframeDefault = ({ className, testCaseText, feedbackText }) => {
+export const BottomframeDefault = (
+  { className, testCaseText, feedbackText },
+) => {
   const [isFeedbackVisible, setIsFeedbackVisible] = useState(false); // State to toggle content
 
   const getDisplayedText = () => {
+    console.log(testCaseText);
     if (isFeedbackVisible) {
-      return feedbackText && feedbackText.trim() !== "" ?  feedbackText : "No Feedback Yet"; //feedbackText || "No Feedback Yet"; // Default message if no feedback
+      return feedbackText && feedbackText.trim() !== ""
+        ? feedbackText
+        : "No Feedback Yet"; //feedbackText || "No Feedback Yet"; // Default message if no feedback
     }
-    return testCaseText && testCaseText.trim() !== "" ? testCaseText : "No Test Results Yet"; //testCaseText || "No Test Results Yet"; // Default message if no test case results
+    return testCaseText && testCaseText.trim() !== ""
+      ? testCaseText
+      : "No Test Results Yet"; //testCaseText || "No Test Results Yet"; // Default message if no test case results
   };
 
   return (
@@ -34,7 +41,8 @@ export const BottomframeDefault = ({ className, testCaseText, feedbackText }) =>
 
       {/* Scrollable Content Section */}
       <div className="bottomframe-content">
-        <p>{getDisplayedText()}</p> {/* Display appropriate content */}
+        <p style={{ whiteSpace: "pre-wrap" }}>{getDisplayedText()}</p>{" "}
+        {/* Display appropriate content */}
       </div>
     </div>
   );

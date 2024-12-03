@@ -1,3 +1,4 @@
+import { wait } from "@testing-library/user-event/dist/utils";
 import React, { useState } from "react";
 import { BottomframeDefault } from "../../components/BottomframeDefault";
 import { CodeEditorDisplay } from "../../components/CodeEditorDisplay";
@@ -14,7 +15,7 @@ export const Desktop = () => {
 
   const onCodeChange = (newCode) => {
     setCode(newCode);
-    console.log(code)
+    console.log(code);
   };
 
   const handleSubmit = async () => {
@@ -35,19 +36,23 @@ export const Desktop = () => {
         const testCaseFormatted = data.feedback
           .map(
             (item) =>
-              `Test Case - Input: ${item.input}, Output: ${item.output || item.error
-              }, Expected: ${item.expected}, Result: ${item.result}`
-          )
-          .join("\n");
+              item.output
+                ? [
+                  `Result: ${item.result}`,
+                  `Input: ${item.input}`,
+                  `Output: ${item.output}`,
+                  `Expected: ${item.expected}`,
+                ].join("\n")
+                : [
+                  `Result: ${item.result}`,
+                  `Error: ${item.error}`,
+                ].join("\n"),
+          )[0];
 
         const feedbackFormatted = data.feedback
           .map(
-            (item) =>
-              `Input: ${item.input}, Output: ${item.output || item.error
-              }, Expected: ${item.expected}, Result: ${item.result
-              }, Feedback: ${item.ai_feedback}`
-          )
-          .join("\n");
+            (item) => item.ai_feedback,
+          )[0];
 
         const errorLines = data.feedback
           .flatMap((item) => item.ai_error_lines)
@@ -70,7 +75,10 @@ export const Desktop = () => {
         <div className="overlap">
           <ProblemsButton className="problems-button-instance" />
         </div>
-        <SubmitButton className="submit-button-instance" onSubmit={handleSubmit} />
+        <SubmitButton
+          className="submit-button-instance"
+          onSubmit={handleSubmit}
+        />
         <ProblemDisplay className="problem-display-instance" />
         <CodeEditorDisplay
           className="code-editor-display-instance"
